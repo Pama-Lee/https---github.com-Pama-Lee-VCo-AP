@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Visual Co-Adaptation: Enhancing Image Generation with Human-in-the-loop
+      Prompting
+    </title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      h1,
+      h2 {
+        color: #333;
+      }
+      p {
+        color: #666;
+      }
+
+      .title {
+        font-family: "Times New Roman", Times, serif;
+        text-align: center;
+        margin-bottom: 20px;
+
+        h1 {
+          font-size: calc(1.2em + 0.8vw);
+        }
+      }
+
+      .icons {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .icon-container {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+        border-radius: 20px;
+        padding: 5px 10px;
+        background-color: #f0f0f0;
+        cursor: pointer;
+
+        transition: background-color 0.3s;
+
+        .icon {
+          margin-right: 8px;
+
+          img {
+            width: 25px;
+          }
+        }
+
+        .icon-text {
+          font-size: 1.2em;
+        }
+      }
+
+      .span {
+        padding-left: 3vw;
+      }
+
+      .content {
+        margin: 0 auto;
+        max-width: 1000px;
+        padding: 20px;
+
+        p {
+          font-size: calc(1em + 0.2vw);
+          font-family: "Times New Roman", Times, serif;
+          line-height: 1.5;
+        }
+      }
+
+      .subtitle {
+        font-family: "Times New Roman", Times, serif;
+        font-size: calc(1em + 0.5vw);
+      }
+
+      .zoomable {
+        cursor: zoom-in;
+      }
+
+      .result-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Times New Roman', Times, serif;
+
+        th,
+        td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f2f2f2;
+        }
+
+        .strong {
+          font-weight: bold;
+          background-color: #e1ebff;
+        }
+      }
+
+      .result-image {
+        width: 70%;
+        margin-top: 30px;
+
+        @media (max-width: 768px) {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">
+      <h1>
+        Visual Co-Adaptation: Enhancing Image Generation with Human-in-the-loop Prompting
+      </h1>
+      <h3>
+        Yangfan He<span class="span"></span>John Smith<span class="span"></span
+        >Jane Doe
+      </h3>
+      <h2 style="color: #255aa9">NeurIPS 2024</h2>
+      <div class="icons">
+        <!-- github -->
+        <div class="icon-container">
+          <div class="icon">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/github.png" />
+          </div>
+          <div class="icon-text">GitHub</div>
+        </div>
+        <!-- axriv -->
+        <div class="icon-container">
+          <div class="icon">
+            <img src="./images/arxiv.png" />
+          </div>
+          <div class="icon-text">ArXiv</div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="section">
+        <h2 class="subtitle">Abstract</h2>
+        <p>
+          Today's image generation systems are capable of producing realistic
+          and high-quality images. However, user prompts often contain
+          ambiguities, making it difficult for these systems to interpret users'
+          actual intentions. Consequently, many users must modify their prompts
+          several times to ensure the generated images meet their expectations.
+          While some methods focus on enhancing prompts to make the generated
+          images fit user needs, the model is still hard to understand users'
+          real needs, especially for non-expert users. In this research, we aim
+          to enhance the visual parameter-tuning process, making the model
+          user-friendly for individuals without specialized knowledge and it can
+          better understand user needs. We propose a human-machine co-adaption
+          strategy using mutual information between the user's prompts and the
+          pictures under modification as the optimizing target in order to make
+          the system better adapt to user needs. We find that an improved model
+          can reduce the necessity for multiple rounds of adjustments. Various
+          experiments demonstrate the effectiveness of the proposed method.
+        </p>
+      </div>
+
+      <div class="section">
+        <!-- Structure -->
+        <img
+          src="./images/structure-3.png"
+          alt="Structure"
+          style="width: 100%"
+          class="zoomable"
+        />
+        <p style="font-size: 1em">
+          <strong>Figure 1.</strong> The diagram simply shows how the model uses
+          the CLIP scoring tool to check if an image matches what the user
+          wants. It treats CLIP scores as reward, improving the image through
+          rounds of feedback, like leveling up in a game, until it perfectly
+          matches the request. The basic framework of prompt-to-prompt ensures
+          the image consistently matches the user’s prompts, keeping the process
+          aligned with the initial request through all rounds more and more
+          closely.
+        </p>
+      </div>
+      <hr />
+
+      <div class="section">
+        <div>
+          <h2 class="subtitle">
+            Results
+          </h2>
+          <table class="result-table">
+            <tr>
+              <th>Model</th>
+              <th>Human Evaluation ↑</th>
+              <th>CLIPscore ↑</th>
+              <th>LPIPS ↓</th>
+              <th>Average(CLIPscore/LPIPS) ↑</th>
+            </tr>
+            <tr>
+              <td>ChatGPT-4[1]</td>
+              <td>2.83(5)</td>
+              <td>26.63/28.06/29.52/23.05</td>
+              <td>0.59/0.52/0.55</td>
+              <td>26.81/0.55</td>
+            </tr>
+            <tr>
+              <td>Stable Diffusion Model[20]</td>
+              <td>2.53(5)</td>
+              <td>27.52/30.04/31.71/23.93</td>
+              <td>0.64/0.41/0.14</td>
+              <td>28.30/0.40</td>
+            </tr>
+            <tr>
+              <td>Prompt to Prompt[7]</td>
+              <td>3.5(5)</td>
+              <td>28.91/29.34/32.07/24.33</td>
+              <td>0.31/0.12/0.18</td>
+              <td>28.66/0.20</td>
+            </tr>
+            <tr class="strong">
+              <td>Ours</td>
+              <td>4.3(5)</td>
+              <td>29.04/29.03/31.51</td>
+              <td>0.31/0.15</td>
+              <td>29.86/0.23</td>
+            </tr>
+          </table>
+          <p style="font-size: 1em; margin-top: 10px;">
+            <strong>Table 1.</strong> In the Human Evaluation experiment, we
+            enlisted 30 human participants to score the generated images(the
+            perfect score is 5). In the columns for CLIPscore and LIPIPS, the
+            scores are listed from left to right, corresponding to each round of
+            dialogue from the first to the last round.
+          </p>
+
+          <div style="text-align: center;">
+          <img src="./images/e5.png" alt="Results" class="zoomable result-image" />
+            <p style="font-size: 1em;text-align: left;">
+              <strong>Figure 2.</strong> We carried out an examination to assess the flexibility and responsiveness of image generation models by incrementally refining the outputs based on user feedback. Beginning with a broad request for ”soup,” we narrowed down our specifications step by step, moving to ”pea soup” and subsequently ”enriching the prompt with ’croutons,’ followed by a request for ’more croutons’”. We evaluated the GPT, Stable Diffusion, Prompt-to-Prompt, and our proposed model in this sequence, arranged from left to right. Since our model had already generated a sufficiently good image by the third round, it did not proceed to the fourth round of generation. This methodology was designed to evaluate the models’ capacity to adapt to progressively detailed instructions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const images = document.querySelectorAll("img");
+      images.forEach((image) => {
+        const placeholder = document.createElement("div");
+        placeholder.style.width = image.width + "px";
+        placeholder.style.height = image.height + "px";
+        placeholder.style.backgroundColor = "#ccc";
+        placeholder.style.display = "block";
+        placeholder.style.position = "relative";
+        placeholder.style.zIndex = "1";
+        image.insertAdjacentElement("afterend", placeholder);
+        image.addEventListener("load", () => {
+          placeholder.style.display = "none";
+        });
+      });
+
+      const iconContainers = document.querySelectorAll(".icon-container");
+      iconContainers.forEach((iconContainer) => {
+        iconContainer.addEventListener("mouseover", () => {
+          iconContainer.style.backgroundColor = "#e0e0e0";
+        });
+        iconContainer.addEventListener("mouseout", () => {
+          iconContainer.style.backgroundColor = "#f0f0f0";
+        });
+      });
+
+      images.forEach((image) => {
+        if (!image.classList.contains("zoomable")) {
+          return;
+        }
+        image.addEventListener("click", () => {
+          const imgSrc = image.src;
+          const img = document.createElement("img");
+          img.src = imgSrc;
+          img.style.width = "100%";
+          img.style.height = "100%";
+          img.style.objectFit = "contain";
+          img.style.position = "fixed";
+          img.style.top = "0";
+          img.style.left = "0";
+          img.style.zIndex = "9999";
+          img.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+          img.style.cursor = "zoom-out";
+          img.style.transition = "transform 0.3s";
+          img.addEventListener("click", () => {
+            img.remove();
+          });
+          document.body.appendChild(img);
+        });
+      });
+    </script>
+  </body>
+</html>
